@@ -28,9 +28,17 @@ Task.list -> Array["Name"]  名前の一覧が良いのでは？
 
 ## 2. タスクに名前をつけて識別
 
-  def name=: (String) -> String
+こうしたい。
+```
+Task.name = "Task1"
+```
 
-  def name -> String
+```
+def name=: (String) -> String
+def name -> String
+```
+
+（検討）setterの戻り値は、void でも良いか？
 
 
 ## 3. 一時停止（自ら）

@@ -20,12 +20,13 @@
 7. 終了（自ら）
 8. 終了（他タスクから）
 9. 他タスクの終了待ち
+10. タスクプライオリティーの変更
 
 
 ## 1. タスクリストの保持
 
 Task.list -> Array[Task]  
-Task.list -> Array["Name"]  名前の一覧が良いのでは？
+Task.name_list -> Array["Name"]
 
 
 ## 2. タスクに名前をつけて識別
@@ -58,6 +59,7 @@ task2 = Task.new("TaskName") # その名前を持つタスク
 
   def suspend: () -> self
 
+Thread だと、Thread#stop か？
 
 ## 5. 一時停止（他タスクから）
 

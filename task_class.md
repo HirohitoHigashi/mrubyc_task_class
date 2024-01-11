@@ -58,6 +58,15 @@ task2 = Task.new("TaskName") # その名前を持つタスク
 Task.new だと、新しいタスクを作るみたい。実際は今動いているタスクを操作するためのオブジェクトを得るという操作。
 Task.get とかの方が良いか？
 
+指定のタスク実行完了待ちは、こう？
+```
+until task1 = Task.get("Task1")
+  sleep 1
+end
+task1.join
+```
+
+
 ## 4. 一時停止（自ら）
 
   def suspend: () -> self

@@ -22,6 +22,7 @@
 9. 他タスクの終了待ち
 10. タスクプライオリティーの変更
 11. 実行権を手放す
+12. 状態の取得
 
 
 ## 1. タスクリストの保持
@@ -74,30 +75,68 @@ task1.join
 
 Thread だと、Thread#stop か？
 
+```
+Task.suspend
+```
+
 ## 5. 一時停止（他タスクから）
+
+```
+task1.suspend
+```
 
 ## 6. 再開（他タスクから）
 
-resume
+```
+task1.resume
+```
 
 ## 7. 終了（自ら）
 
   def terminate: () -> self
 
+```
+Task.terminate
+```
 
 ## 8. 終了（他タスクから）
+
+```
+task1.terminate
+```
 
 ## 9. 他タスクの終了待ち
 
   def join: (?Integer|nil) -> (self | nil)
 
+```
+task1.join
+```
+
+（検討）
+Threadクラスには、引数としてタイムアウト秒を渡せるが、実装が面倒かも？
+
 
 ## 10. タスクプライオリティーの変更
 ```
-task.priority = n
+task.priority = n    # 0(低) - 255(高)
 ```
 
 ## 11. 実行権を手放す
 ```
 Task.pass
 ```
+
+## 12. 状態の取得
+
+```
+task.status
+```
+
+戻り値  
+スケジューラの状態を文字列で返せば良いか？
+
+DORMANT
+READY
+WAITING
+SUSPENDED

@@ -93,6 +93,20 @@ static void c_task_run(mrbc_vm *vm, mrbc_value v[], int argc)
   mrbc_start_task(tcb);
 }
 
+//================================================================
+/*! (method) TODO
+
+  task1.rewind
+*/
+static void c_task_rewind(mrbc_vm *vm, mrbc_value v[], int argc)
+{
+  if( v[0].tt == MRBC_TT_CLASS ) return;
+
+  mrbc_tcb *tcb = *(mrbc_tcb **)v[0].instance->data;
+
+  mrbc_vm_begin( &tcb->vm );
+}
+
 
 int main(int argc, char *argv[])
 {

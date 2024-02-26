@@ -66,6 +66,7 @@ static void c_task_create(mrbc_vm *vm, mrbc_value v[], int argc)
     mrbc_raise( vm, MRBC_CLASS(NoMemoryError), 0 );
     return;
   }
+  tcb->vm.flag_permanence = 1;
 
   if( !mrbc_create_task( byte_code, tcb ) ) return;
 
@@ -104,7 +105,26 @@ static void c_task_rewind(mrbc_vm *vm, mrbc_value v[], int argc)
 
   mrbc_tcb *tcb = *(mrbc_tcb **)v[0].instance->data;
 
+  if( tcb->vm.flag_permanence ) {
+    mrbc_vm_end( &tcb->vm );
+  }
   mrbc_vm_begin( &tcb->vm );
+}
+
+
+//================================================================
+/*! (method) TODO
+
+  task1.return_value
+*/
+static void c_task_return_value(mrbc_vm *vm, mrbc_value v[], int argc)
+{
+  if( v[0].tt == MRBC_TT_CLASS ) return;
+
+  mrbc_tcb *tcb = *(mrbc_tcb **)v[0].instance->data;
+
+  mrbc_incref( &tcb->vm.regs[0] );
+  SET_RETURN( tcb->vm.regs[0] );
 }
 
 
@@ -125,6 +145,8 @@ int main(int argc, char *argv[])
   mrbc_class *cls = mrbc_get_class_by_name("Task");
   mrbc_define_method(0, cls, "create", c_task_create);
   mrbc_define_method(0, cls, "run", c_task_run);
+  mrbc_define_method(0, cls, "rewind", c_task_rewind);
+  mrbc_define_method(0, cls, "return_value", c_task_return_value);
 
   // create each task.
   for( int i = 0; i < vm_cnt; i++ ) {

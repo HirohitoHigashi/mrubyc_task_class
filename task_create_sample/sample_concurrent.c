@@ -127,6 +127,41 @@ static void c_task_return_value(mrbc_vm *vm, mrbc_value v[], int argc)
   SET_RETURN( tcb->vm.regs[0] );
 }
 
+//================================================================
+/*! (method) TODO
+
+  task1.return_value
+*/
+static void c_task_raise(mrbc_vm *vm, mrbc_value v[], int argc)
+{
+  if( v[0].tt == MRBC_TT_CLASS ) return;
+  mrbc_tcb *tcb = *(mrbc_tcb **)v[0].instance->data;
+  mrbc_vm *vm1 = &tcb->vm;
+  mrbc_value exc;
+
+  if( argc == 0 ) {
+    exc = mrbc_exception_new( vm1, MRBC_CLASS(RuntimeError), 0, 0 );
+  } else if( v[1].tt == MRBC_TT_EXCEPTION ) {
+    exc = v[1];
+    mrbc_incref(&exc);
+  } else {
+    mrbc_raise( vm, MRBC_CLASS(ArgumentError), 0 );
+    return;
+  }
+
+  mrbc_decref(&vm1->exception);
+  vm1->exception = exc;
+  vm1->flag_preemption = 2;
+
+  // タスクがスリープしている場合、起こす処理を入れておく。
+  // それ以外で止まっている時は、どうすべき？
+  if( tcb->state == TASKSTATE_WAITING && tcb->reason == TASKREASON_SLEEP ) {
+    void mrbc_wakeup_task(mrbc_tcb *tcb);
+    mrbc_wakeup_task( tcb );
+  }
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -147,6 +182,7 @@ int main(int argc, char *argv[])
   mrbc_define_method(0, cls, "run", c_task_run);
   mrbc_define_method(0, cls, "rewind", c_task_rewind);
   mrbc_define_method(0, cls, "return_value", c_task_return_value);
+  mrbc_define_method(0, cls, "raise", c_task_raise);
 
   // create each task.
   for( int i = 0; i < vm_cnt; i++ ) {

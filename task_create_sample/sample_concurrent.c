@@ -130,7 +130,8 @@ static void c_task_return_value(mrbc_vm *vm, mrbc_value v[], int argc)
 //================================================================
 /*! (method) TODO
 
-  task1.return_value
+  task1.raise()
+  task1.raise( RangeError.new("message here!") )
 */
 static void c_task_raise(mrbc_vm *vm, mrbc_value v[], int argc)
 {

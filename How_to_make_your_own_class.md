@@ -150,7 +150,7 @@ mrbc_define_method(0, my_class, "method1", c_myclass_method1);
 ------------------------------------------------------------------------------
 # インスタンス固有のデータを必要とする場合
 
-クラスによっては、生成するインスタンス固有のデータを必要とする場合がある。  
+クラスによっては、生成するインスタンス固有のデータを必要とする場合がある。
 mruby/c では、mrbc_instance 構造体の末尾に可変長データメンバ `data` を確保することで、それをサポートする。
 
 ## 方法
@@ -180,7 +180,7 @@ static void c_myclass_method1(mrbc_vm *vm, mrbc_value v[], int argc)
 
 NOTE: 代入、取り出しのマクロが欲しいところ。
 
-### mrbc_value mrbc_instance_new の引数
+### mrbc_instance_new の引数
 ```
 mrbc_instance_new(struct VM *vm, mrbc_class *cls, int size)
   @param  vm    Pointer to VM.
@@ -188,4 +188,3 @@ mrbc_instance_new(struct VM *vm, mrbc_class *cls, int size)
   @param  size	size of additional data.
   @return       mrbc_instance object.
 ```
-

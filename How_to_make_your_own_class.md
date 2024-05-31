@@ -106,7 +106,7 @@ SET_RETURN(ret);
 
 C文字列から生成
 ```
-mrbc_string_new_cstr(vm, "ABC");
+mrbc_value ret = mrbc_string_new_cstr(vm, "ABC");
 ```
 
 別途 mrbc_alloc したメモリバッファから生成

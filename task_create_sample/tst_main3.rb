@@ -11,6 +11,5 @@ byte_code = "RITE0300\x00\x00\x00xMATZ0000IREP\x00\x00\x00\\0300\x00\x00\x00.\x0
 task2 = Task.create(byte_code)
 
 task2.run
-task2.join
-r = task2.return_value
+r = task2.value
 print "RET_VAL : #{r}\n"
